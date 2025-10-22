@@ -5,16 +5,13 @@ const Square = ({ color, piece, position, onClick, inCheck }) => {
     return (
         <div
             onClick={(e) => onClick(position, e)}
-            className="square"
+            className={`
+                flex items-center justify-center
+                w-full h-full
+                ${inCheck ? "ring-4 ring-red-500" : ""}
+            `}
             style={{
-                width: '64px',
-                height: '64px',
                 backgroundColor: color,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',   
-                boxSizing: "border-box",
-                border: inCheck ? "3px solid red" : "1px solid #333",           
             }}
         >
 

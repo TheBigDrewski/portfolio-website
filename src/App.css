@@ -41,30 +41,3 @@
   color: #888;
 }
 
-.board {
-  width: 512px;
-  height: 512px;
-  background-color: black;
-}
-
-.blackSquare {
-  width: 64px;
-  height: 64px;
-  padding: 0;
-  background-color: rgb(63, 159, 63);
-}
-
-.whiteSquare {
-  width: 64px;
-  height: 64px;
-  padding: 0;
-  background-color: white;
-}
-
-/* .square {
-  width: 64px;
-  height: 64px;
-  display: 'flex';
-  align-items: center;
-  justify-content: center;
-} */

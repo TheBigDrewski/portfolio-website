@@ -4,9 +4,7 @@ export const isValidMove = (from, to, piece, pieces, enPassantTarget) => {
         const rowDiff = Math.abs(toRow - fromRow);
         const colDiff = Math.abs(toCol - fromCol);
 
-        //console.log("From: " + from + " To: " + to + " Piece: " + piece.type);
-
-        //Pawn Logic
+        // Pawn Logic
         if(piece.type === "dp" || piece.type === "lp") {
             const dir = piece.color === "light" ? -1 : 1;
             const startRow = piece.color === "light" ? 6 : 1;
@@ -38,7 +36,7 @@ export const isValidMove = (from, to, piece, pieces, enPassantTarget) => {
 
             return oneStep || twoStep || capture || enPassant;
         }
-        //Rook Logic
+        // Rook Logic
         else if(piece.type === "dr" || piece.type === "lr") {
                 const sameRow = fromRow === toRow;
                 const sameCol = fromCol === toCol;
@@ -63,7 +61,7 @@ export const isValidMove = (from, to, piece, pieces, enPassantTarget) => {
                 return true;
 
         }
-        //Knight Logic
+        // Knight Logic
         else if(piece.type === "dkn" || piece.type === "lkn"){
             if((rowDiff === 2 && colDiff === 1) || (rowDiff === 1 && colDiff === 2)){
                 const target = pieces[to];
@@ -72,7 +70,7 @@ export const isValidMove = (from, to, piece, pieces, enPassantTarget) => {
                 return true;
             }
         }
-        //Bishop Logic
+        // Bishop Logic
         else if(piece.type === "db" || piece.type === "lb"){
             if(rowDiff !== colDiff) return false;
 
@@ -94,12 +92,12 @@ export const isValidMove = (from, to, piece, pieces, enPassantTarget) => {
 
             return true;
         }
-        //Queen Logic
+        // Queen Logic
         else if(piece.type === "dq" || piece.type === "lq"){
             return (isValidMove(from, to, {...piece, type: "dr"}, pieces) || 
                     isValidMove(from, to, {...piece, type: "lb"}, pieces));
         }
-        //King Logic
+        // King Logic
         else if (piece.type === "dk" || piece.type === "lk") {
             if (rowDiff <= 1 && colDiff <= 1 && !(rowDiff === 0 && colDiff === 0)) {
                 const target = pieces[to];
@@ -169,4 +167,54 @@ export const isKingInCheck = (pieces, color) => {
     }
 
     return false;
+}
+
+export const isCheckMate = (pieces, color) => {
+    if (!isKingInCheck(pieces, color)) return false;
+
+    for (const from in pieces) {
+        const piece = pieces[from];
+        if (piece.color !== color) continue;
+
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const to = `${row},${col}`;
+
+                if (!isValidMove(from, to, piece, pieces)) continue;
+
+                const newBoard = { ...pieces };
+                delete newBoard[from];
+                newBoard[to] = { ...piece, hasMoved: true };
+
+                if (!isKingInCheck(newBoard, color)) return false;
+            }
+        }
+    }
+
+    return true;
+}
+export const isStalemate = (pieces, color) => {
+    if (isKingInCheck(pieces, color)) return false;
+
+    for (const from in pieces) {
+        const piece = pieces[from];
+        if (piece.color !== color) continue;
+
+        for (let row = 0; row < 8; row++){
+            for (let col = 0; col < 8; col++){
+                const to = `${row},${col}`;
+
+                if(!isValidMove(from, to, piece, pieces)) continue;
+
+                const newBoard = { ...pieces };
+                delete newBoard[from];
+                newBoard[to] = { ...pieces, hasMoved: true };
+
+                if(!isKingInCheck(newBoard, color)) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
 }

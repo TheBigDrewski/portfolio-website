@@ -11,8 +11,7 @@ import lq from './assets/Chess_qlt45.svg.png';
 import dk from './assets/Chess_kdt45.svg.png';
 import lk from './assets/Chess_klt45.svg.png';
 
-const Piece = ({ type }) => {
-    const symbolMap = {
+export const symbolMap = {
         dp: dp,
         lp: lp,
         dr: dr,
@@ -27,19 +26,20 @@ const Piece = ({ type }) => {
         lk: lk,
     };
 
+const Piece = ({ type, fixedSize = false }) => {
     const symbolSrc = symbolMap[type];
-
     if(!symbolSrc) return null;
 
     return (
         <img
-        src={symbolSrc}
-        alt={type}
-        style={{
-            width: '64px',
-            height: '64px',
-            userSelect: 'none',
-        }}
+            src={symbolSrc}
+            alt={type}
+            className={
+                fixedSize
+                ? "w-full h-full object-contain select-none pointer-events-none"
+                : "w-[85%] h-[85%] object-contain select-none pointer-events-none"
+            }
+            draggable="false"
         />
     );
 };
