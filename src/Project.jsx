@@ -3,8 +3,8 @@ export default function Project ({ title, desc, list = [], img, page }) {
     return (
         <div className="bg-current flex-auto">
             <div className="py-5 px-2">
-                <div className="bg-primary-500 rounded-xl shadow-xl">
-                    <div className="text-3xl text-light font-extrabold font-sans-inter py-3">
+                <div className="border-2 border-primary-300 rounded-xl">
+                    <div className="text-3xl text-primary-400 font-extrabold font-sans-inter py-3">
                         {title}
                     </div>
                     <div className="flex flex-row">
