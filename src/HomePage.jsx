@@ -5,14 +5,12 @@ export default function HomePage() {
         Hey, I’m Andrew Jeschke
       </h1>
       <p className="text-lg text-gray-300 max-w-2xl mb-8">
-        A systems developer and software engineer building efficient, data-driven solutions across web, automation, and game design.
+        A Systems Developer & Software Engineer focused on building efficient, intelligent tools for real-world operations.
       </p>
-      <a
-        href="/projects"
-        className="px-6 py-3 bg-primary-500 hover:bg-primary-400 text-white font-semibold rounded-lg transition-all duration-200"
-      >
-        View My Projects
-      </a>
+      <div className="flex space-x-4">
+        <a href="/projects" className="px-6 py-3 bg-primary-500 hover:bg-primary-400 rounded-lg">View My Work</a>
+        <a href="/Andrew_Jeschke_Resume.pdf" className="px-6 py-3 border border-primary-500 hover:bg-primary-500 hover:text-black rounded-lg">Download Resume</a>
+      </div>
     </section>
   );
 }

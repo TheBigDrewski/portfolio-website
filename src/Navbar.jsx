@@ -8,7 +8,6 @@ export default function Navbar() {
 
                 <div className="flex gap-6 text-sm font-medium">
                     <a href="/" className="hover:text-primary-300 transition-colors">Home</a>
-                    <a href="/chess" className="hover:text-primary-300 transition-colors">Chess App</a>
                     <a href="/projects" className="hover:text-primary-300 transition-colors">Projects</a>
                     <a href="/contact" className="hover:text-primary-300 transition-colors">Contact</a>
                 </div>
