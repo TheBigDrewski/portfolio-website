@@ -8,7 +8,7 @@ const Square = ({ color, piece, position, onClick, inCheck }) => {
             className={`
                 flex items-center justify-center
                 w-full h-full
-                ${inCheck ? "ring-4 ring-red-500" : ""}
+                ${inCheck ? "ring ring-red-500 ring-inset" : ""}
             `}
             style={{
                 backgroundColor: color,

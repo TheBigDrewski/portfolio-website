@@ -114,7 +114,6 @@ const Board = () => {
                     }
                     
                     const isLight = draggingPiece.piece.color === "light";
-                    console.log(isLight && toRow === 0);
                     if ((isLight && toRow === 0) || (!isLight && toRow === 7)) {
                         const promotedType = isLight ? "lq" : "dq";
                         setPromotionInfo({
@@ -153,15 +152,15 @@ const Board = () => {
             delete updated[draggingPiece.pos];
 
             if(isKingInCheck(updated, draggingPiece.piece.color, isValidMove)) {
-                console.log("King is in Check");
                 setDraggingPiece(null);
                 return;
             }
             
             setPieces(updated);
-            setDraggingPiece(null);
-            
+
             const opponent = draggingPiece.piece.color === "light" ? "dark" : "light";
+            setDraggingPiece(null);
+
             if(isKingInCheck(updated, opponent)) {
                 setCheckedKing(opponent);
             } else {
@@ -173,7 +172,7 @@ const Board = () => {
                 setCheckedKing(opponent);
 
                 if (isCheckMate(updated, opponent)) {
-                    setWinner(opponent.color === "light" ? "Black" : "White");
+                    setWinner(opponent === "light" ? "Black" : "White");
                     setIsGameOver(true);
                     return;
                 }
@@ -227,7 +226,7 @@ const Board = () => {
                 const piece = draggingPiece && draggingPiece.pos === position 
                             ? null 
                             : (pieces && pieces[position]);
-
+                
                 squares.push(
                 <Square
                     key={position}
@@ -250,7 +249,7 @@ const Board = () => {
             <div className="text-lg font-semibold">
                 Turn: <span className="text-primary capitalize">{turn === "light" ? "White" : "Black"}</span>
             </div>
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-red-400">
                 {checkedKing ? `${checkedKing} king in check` : ""}
             </div>
             </div>
@@ -315,12 +314,12 @@ const Board = () => {
                             const colorPrefix = promotionInfo.color === "light" ? "l" : "d";
                             const pieceKey =
                                 type === "kn"
-                                ? `${colorPrefix}Knight`
+                                ? `${colorPrefix}kn`
                                 : type === "b"
-                                ? `${colorPrefix}Bishop`
+                                ? `${colorPrefix}b`
                                 : type === "r"
-                                ? `${colorPrefix}Rook`
-                                : `${colorPrefix}Queen`;
+                                ? `${colorPrefix}r`
+                                : `${colorPrefix}q`;
 
                             return (
                                 <button
