@@ -27,11 +27,11 @@ export default function Project ({ title, desc, list = [], img, page }) {
                                 )}
                             </div>
                         </div>
-                        <div className="flex">
+                        <div className="flex flex-col px-2 py-2">
                             <a  href={page}
-                                className="hover:bg-primary-400 rounded-2xl"
+                                className="hover:border-2 hover:border-primary-200 rounded-xl"
                             >
-                                <img src={img} className="p-2 rounded-3xl"/>
+                                <img src={img} className="rounded-xl"/>
                             </a>
                         </div>
                     </div>
