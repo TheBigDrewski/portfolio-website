@@ -3,6 +3,7 @@ import './App.css'
 import Square from './Square.jsx';
 import Piece, { symbolMap } from './Piece.jsx';
 import { isValidMove, isKingInCheck, isCheckMate, isStalemate } from './gameLogic.jsx';
+import { hasWarned } from 'framer-motion';
 
 const Board = () => {
     const [pieces, setPieces] = useState({
@@ -39,6 +40,14 @@ const Board = () => {
         '7,6': { type: 'lkn' , color: "light", hasMoved: false },
         '7,7': { type: 'lr' , color: "light", hasMoved: false },
     });
+    const pieceValues = {
+        p: 1,
+        kn: 3,
+        b: 3,
+        r: 5,
+        q: 9,
+        k: 1000
+    };
 
     const [draggingPiece, setDraggingPiece] = useState(null);
     const [dragPos, setDragPos] = useState({ x: 0, y: 0});
@@ -48,8 +57,11 @@ const Board = () => {
     const [promotionInfo, setPromotionInfo] = useState(null);
     const [isGameOver, setIsGameOver] = useState(null);
     const [winner, setWinner] = useState(null);
-    const boardRef = useRef(null);
     const [squareSize, setSquareSize] = useState(0);
+    const [isVsComputer, setIsVsComputer] = useState(true);
+    const [aiColor, setAiColor] = useState("dark"); // you can switch this
+    const [moveHistory, setMoveHistory] = useState([]);
+    const boardRef = useRef(null);
 
     useEffect(() => {
         const updateSize = () => {
@@ -157,6 +169,16 @@ const Board = () => {
             }
             
             setPieces(updated);
+            setMoveHistory(prev => [
+                ...prev,
+                {
+                    color: draggingPiece,
+                    piece: draggingPiece.piece.type,
+                    from: draggingPiece.pos,
+                    to: pos,
+                    captured: pieces[pos] ? pieces[pos].type : null,
+                }
+            ]);
 
             const opponent = draggingPiece.piece.color === "light" ? "dark" : "light";
             setDraggingPiece(null);
@@ -167,6 +189,15 @@ const Board = () => {
                 setCheckedKing(null);
             }
             setTurn((prev) => (prev === "light" ? "dark" : "light")); // swap turns
+
+            setPieces(updated => {
+                const nextBoard = { ...updated };
+                if(isVsComputer && turn === "light"){
+                    setTimeout(() => makeAiMove(nextBoard), 1000);
+                }
+                return nextBoard;
+            });
+            
 
             if (isKingInCheck(updated, opponent)) {
                 setCheckedKing(opponent);
@@ -241,6 +272,90 @@ const Board = () => {
         }
         return squares;
     };
+
+    function makeAiMove (currentBoard) {
+        const aiPieces = Object.entries(currentBoard).filter(
+            ([, p]) => p.color === aiColor
+        );
+
+        let bestMove = null;
+        let bestScore = -Infinity;
+        let lastPlayableMove = null;
+
+        for (const [from, piece] of aiPieces) {
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 8; col++) {
+                    const to = `${row},${col}`;
+                    if (!isValidMove(from, to, piece, currentBoard)) continue; 
+                    lastPlayableMove = { from, to, piece };
+
+                    const newBoard = structuredClone(currentBoard);
+                    newBoard[to] = { ...piece, hasMoved: true };
+                    delete newBoard[from];
+
+                    if (isKingInCheck(currentBoard, aiColor)) continue;
+
+                    const score = evaluateBoard(newBoard, aiColor);
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMove = { from, to, piece };
+                    }
+                }
+            }
+        }
+
+        if (bestMove) handleAiMove(bestMove, currentBoard);
+        //else if(lastPlayableMove && !bestMove) handleAiMove(lastPlayableMove, currentBoard);
+    }
+
+    function handleAiMove({ from, to, piece }, baseBoard) {
+        const opponent = aiColor === "light" ? "dark" : "light";
+        setPieces(prev => {
+            const updated = structuredClone(baseBoard)
+            updated[to] = { ...piece, hasMoved: true };
+            if(isKingInCheck(updated, opponent)){
+                setCheckedKing(opponent);
+
+                if (isCheckMate(updated, opponent)) {
+                    setWinner(opponent === "light" ? "Black" : "White");
+                    setIsGameOver(true);
+                    return;
+                }
+                else if (isStalemate(updated, opponent)) {
+                    setWinner(null);
+                    setIsGameOver(true);
+                }
+            } else {
+                setCheckedKing(null);
+            }
+            delete updated[from];
+            return updated;
+        });
+
+        setMoveHistory(prev => [
+                ...prev,
+                {
+                    color: aiColor,
+                    piece: piece.type,
+                    from,
+                    to,
+                    captured: pieces[to] ? pieces[to].type : null,
+                }
+            ]);
+
+        setTurn(piece && piece.color === "light" ? "dark" : "light");
+    }
+
+    function evaluateBoard (pieces, color) {
+        let score = 0;
+        for (const [, piece] of Object.entries(pieces)) {
+            if(!piece || !piece.type) continue;
+
+            const val = pieceValues[piece.type.slice(1)] || 0;
+            score += piece.color === color ? val : -val;
+        }
+        return score;
+    }
 
     return (
         <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-4rem)] p-4 md:p-8 bg-gray-900 text-white relative">
@@ -359,13 +474,24 @@ const Board = () => {
                 </div>
                 </div>
 
-            {/* Sidebar (future move history + import/export) */}
-            <div className="hidden md:flex flex-col items-start text-gray-300 w-64">
-                <h3 className="text-lg font-semibold mb-2">Move History</h3>
-                <div className="bg-gray-800 rounded-lg p-3 w-full h-[400px] overflow-y-auto">
-                <p className="text-sm italic text-gray-500">Coming soon...</p>
+                {/* Move History */}
+
+                <div className="bg-gray-800 rounded-lg p-3 w-full h-[400px] overflow-y-auto text-sm text-gray-200">
+                    {moveHistory.length === 0 ? (
+                        <p className="italic text-gray-500">No moves yet...</p>
+                    ) : (
+                        <ul className="space-y-1">
+                        {moveHistory.map((m, i) => (
+                            <li key={i} className="flex justify-between">
+                            <span>{`${i + 1}. ${m.color === "light" ? "♙" : "♟"} ${m.piece}`}</span>
+                            <span>{`${m.from} → ${m.to}${m.captured ? " × " + m.captured : ""}`}</span>
+                            </li>
+                        ))}
+                        </ul>
+                    )}
                 </div>
-            </div>
+
+
             </div>
         </div>
     );
