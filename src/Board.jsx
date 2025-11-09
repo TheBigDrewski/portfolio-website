@@ -6,40 +6,76 @@ import { isValidMove, isKingInCheck, isCheckMate, isStalemate } from './gameLogi
 import { hasWarned } from 'framer-motion';
 
 const Board = () => {
-    const [pieces, setPieces] = useState({
-        '0,0': { type: 'dr' , color: "dark", hasMoved: false },
-        '0,1': { type: 'dkn' , color: "dark", hasMoved: false },
-        '0,2': { type: 'db' , color: "dark", hasMoved: false },
-        '0,3': { type: 'dq' , color: "dark", hasMoved: false },
-        '0,4': { type: 'dk' , color: "dark", hasMoved: false },
-        '0,5': { type: 'db' , color: "dark", hasMoved: false },
-        '0,6': { type: 'dkn' , color: "dark", hasMoved: false },
-        '0,7': { type: 'dr' , color: "dark", hasMoved: false },
-        '1,0': { type: 'dp' , color: "dark", hasMoved: false },
-        '1,1': { type: 'dp' , color: "dark", hasMoved: false },
-        '1,2': { type: 'dp' , color: "dark", hasMoved: false },
-        '1,3': { type: 'dp' , color: "dark", hasMoved: false },
-        '1,4': { type: 'dp' , color: "dark", hasMoved: false },
-        '1,5': { type: 'dp' , color: "dark", hasMoved: false },
-        '1,6': { type: 'dp' , color: "dark", hasMoved: false },
-        '1,7': { type: 'dp' , color: "dark", hasMoved: false },
-        '6,0': { type: 'lp' , color: "light", hasMoved: false },
-        '6,1': { type: 'lp' , color: "light", hasMoved: false },
-        '6,2': { type: 'lp' , color: "light", hasMoved: false },
-        '6,3': { type: 'lp' , color: "light", hasMoved: false },
-        '6,4': { type: 'lp' , color: "light", hasMoved: false },
-        '6,5': { type: 'lp' , color: "light", hasMoved: false },
-        '6,6': { type: 'lp' , color: "light", hasMoved: false },
-        '6,7': { type: 'lp' , color: "light", hasMoved: false },
-        '7,0': { type: 'lr' , color: "light", hasMoved: false },
-        '7,1': { type: 'lkn' , color: "light", hasMoved: false },
-        '7,2': { type: 'lb' , color: "light", hasMoved: false },
-        '7,3': { type: 'lq' , color: "light", hasMoved: false },
-        '7,4': { type: 'lk' , color: "light", hasMoved: false },
-        '7,5': { type: 'lb' , color: "light", hasMoved: false },
-        '7,6': { type: 'lkn' , color: "light", hasMoved: false },
-        '7,7': { type: 'lr' , color: "light", hasMoved: false },
-    });
+    const whitePlayerBoard = {
+        '0,0': { type: 'dr' , color: "Black", hasMoved: false },
+        '0,1': { type: 'dkn' , color: "Black", hasMoved: false },
+        '0,2': { type: 'db' , color: "Black", hasMoved: false },
+        '0,3': { type: 'dq' , color: "Black", hasMoved: false },
+        '0,4': { type: 'dk' , color: "Black", hasMoved: false },
+        '0,5': { type: 'db' , color: "Black", hasMoved: false },
+        '0,6': { type: 'dkn' , color: "Black", hasMoved: false },
+        '0,7': { type: 'dr' , color: "Black", hasMoved: false },
+        '1,0': { type: 'dp' , color: "Black", hasMoved: false },
+        '1,1': { type: 'dp' , color: "Black", hasMoved: false },
+        '1,2': { type: 'dp' , color: "Black", hasMoved: false },
+        '1,3': { type: 'dp' , color: "Black", hasMoved: false },
+        '1,4': { type: 'dp' , color: "Black", hasMoved: false },
+        '1,5': { type: 'dp' , color: "Black", hasMoved: false },
+        '1,6': { type: 'dp' , color: "Black", hasMoved: false },
+        '1,7': { type: 'dp' , color: "Black", hasMoved: false },
+        '6,0': { type: 'lp' , color: "White", hasMoved: false },
+        '6,1': { type: 'lp' , color: "White", hasMoved: false },
+        '6,2': { type: 'lp' , color: "White", hasMoved: false },
+        '6,3': { type: 'lp' , color: "White", hasMoved: false },
+        '6,4': { type: 'lp' , color: "White", hasMoved: false },
+        '6,5': { type: 'lp' , color: "White", hasMoved: false },
+        '6,6': { type: 'lp' , color: "White", hasMoved: false },
+        '6,7': { type: 'lp' , color: "White", hasMoved: false },
+        '7,0': { type: 'lr' , color: "White", hasMoved: false },
+        '7,1': { type: 'lkn' , color: "White", hasMoved: false },
+        '7,2': { type: 'lb' , color: "White", hasMoved: false },
+        '7,3': { type: 'lq' , color: "White", hasMoved: false },
+        '7,4': { type: 'lk' , color: "White", hasMoved: false },
+        '7,5': { type: 'lb' , color: "White", hasMoved: false },
+        '7,6': { type: 'lkn' , color: "White", hasMoved: false },
+        '7,7': { type: 'lr' , color: "White", hasMoved: false },
+    }
+    const blackPlayerBoard = {
+        '0,0': { type: 'lr' , color: "White", hasMoved: false },
+        '0,1': { type: 'lkn' , color: "White", hasMoved: false },
+        '0,2': { type: 'lb' , color: "White", hasMoved: false },
+        '0,3': { type: 'lk' , color: "White", hasMoved: false },
+        '0,4': { type: 'lq' , color: "White", hasMoved: false },
+        '0,5': { type: 'lb' , color: "White", hasMoved: false },
+        '0,6': { type: 'lkn' , color: "White", hasMoved: false },
+        '0,7': { type: 'lr' , color: "White", hasMoved: false },
+        '1,0': { type: 'lp' , color: "White", hasMoved: false },
+        '1,1': { type: 'lp' , color: "White", hasMoved: false },
+        '1,2': { type: 'lp' , color: "White", hasMoved: false },
+        '1,3': { type: 'lp' , color: "White", hasMoved: false },
+        '1,4': { type: 'lp' , color: "White", hasMoved: false },
+        '1,5': { type: 'lp' , color: "White", hasMoved: false },
+        '1,6': { type: 'lp' , color: "White", hasMoved: false },
+        '1,7': { type: 'lp' , color: "White", hasMoved: false },
+        '6,0': { type: 'dp' , color: "Black", hasMoved: false },
+        '6,1': { type: 'dp' , color: "Black", hasMoved: false },
+        '6,2': { type: 'dp' , color: "Black", hasMoved: false },
+        '6,3': { type: 'dp' , color: "Black", hasMoved: false },
+        '6,4': { type: 'dp' , color: "Black", hasMoved: false },
+        '6,5': { type: 'dp' , color: "Black", hasMoved: false },
+        '6,6': { type: 'dp' , color: "Black", hasMoved: false },
+        '6,7': { type: 'dp' , color: "Black", hasMoved: false },
+        '7,0': { type: 'dr' , color: "Black", hasMoved: false },
+        '7,1': { type: 'dkn' , color: "Black", hasMoved: false },
+        '7,2': { type: 'db' , color: "Black", hasMoved: false },
+        '7,3': { type: 'dk' , color: "Black", hasMoved: false },
+        '7,4': { type: 'dq' , color: "Black", hasMoved: false },
+        '7,5': { type: 'db' , color: "Black", hasMoved: false },
+        '7,6': { type: 'dkn' , color: "Black", hasMoved: false },
+        '7,7': { type: 'dr' , color: "Black", hasMoved: false },
+    }
+
+    const [pieces, setPieces] = useState(blackPlayerBoard);
     const pieceValues = {
         p: 1,
         kn: 3,
@@ -51,7 +87,7 @@ const Board = () => {
 
     const [draggingPiece, setDraggingPiece] = useState(null);
     const [dragPos, setDragPos] = useState({ x: 0, y: 0});
-    const [turn, setTurn] = useState("light");
+    const [turn, setTurn] = useState("White");
     const [checkedKing, setCheckedKing] = useState(null);
     const [enPassantTarget, setEnPassantTarget] = useState(null);
     const [promotionInfo, setPromotionInfo] = useState(null);
@@ -59,8 +95,10 @@ const Board = () => {
     const [winner, setWinner] = useState(null);
     const [squareSize, setSquareSize] = useState(0);
     const [isVsComputer, setIsVsComputer] = useState(true);
-    const [aiColor, setAiColor] = useState("dark"); // you can switch this
+    const [aiColor, setAiColor] = useState("Black"); // you can switch this
     const [moveHistory, setMoveHistory] = useState([]);
+    const [isGameStart, setIsGameStart] = useState(true);
+
     const boardRef = useRef(null);
 
     useEffect(() => {
@@ -125,7 +163,7 @@ const Board = () => {
                         setEnPassantTarget(null);
                     }
                     
-                    const isLight = draggingPiece.piece.color === "light";
+                    const isLight = draggingPiece.piece.color === "White";
                     if ((isLight && toRow === 0) || (!isLight && toRow === 7)) {
                         const promotedType = isLight ? "lq" : "dq";
                         setPromotionInfo({
@@ -140,7 +178,7 @@ const Board = () => {
                 }
                 else if (enPassantTarget && (pos === enPassantTarget)){
                     const [toRow, toCol] = pos.split(",").map(Number);
-                    const dir = draggingPiece.piece.color === "light" ? 1 : -1;
+                    const dir = draggingPiece.piece.color === "White" ? 1 : -1;
                     const capturedPawnPos = `${toRow + dir},${toCol}`
                     delete updated[capturedPawnPos];
                 }
@@ -180,7 +218,7 @@ const Board = () => {
                 }
             ]);
 
-            const opponent = draggingPiece.piece.color === "light" ? "dark" : "light";
+            const opponent = draggingPiece.piece.color === "White" ? "Black" : "White";
             setDraggingPiece(null);
 
             if(isKingInCheck(updated, opponent)) {
@@ -188,11 +226,11 @@ const Board = () => {
             } else {
                 setCheckedKing(null);
             }
-            setTurn((prev) => (prev === "light" ? "dark" : "light")); // swap turns
+            setTurn((prev) => (prev === "White" ? "Black" : "White")); // swap turns
 
             setPieces(updated => {
                 const nextBoard = { ...updated };
-                if(isVsComputer && turn === "light"){
+                if(isVsComputer && turn === "White"){
                     setTimeout(() => makeAiMove(nextBoard), 1000);
                 }
                 return nextBoard;
@@ -203,7 +241,7 @@ const Board = () => {
                 setCheckedKing(opponent);
 
                 if (isCheckMate(updated, opponent)) {
-                    setWinner(opponent === "light" ? "Black" : "White");
+                    setWinner(opponent === "White" ? "Black" : "White");
                     setIsGameOver(true);
                     return;
                 }
@@ -232,7 +270,7 @@ const Board = () => {
 
         setPieces(updated);
         setPromotionInfo(null);
-        setTurn((prev) => (prev === "light" ? "dark" : "light"));
+        setTurn((prev) => (prev === "White" ? "Black" : "White"));
     }
 
     const renderSquares = () => {
@@ -309,7 +347,7 @@ const Board = () => {
     }
 
     function handleAiMove({ from, to, piece }, baseBoard) {
-        const opponent = aiColor === "light" ? "dark" : "light";
+        const opponent = aiColor === "White" ? "Black" : "White";
         setPieces(prev => {
             const updated = structuredClone(baseBoard)
             updated[to] = { ...piece, hasMoved: true };
@@ -317,7 +355,7 @@ const Board = () => {
                 setCheckedKing(opponent);
 
                 if (isCheckMate(updated, opponent)) {
-                    setWinner(opponent === "light" ? "Black" : "White");
+                    setWinner(opponent === "White" ? "Black" : "White");
                     setIsGameOver(true);
                     return;
                 }
@@ -343,7 +381,7 @@ const Board = () => {
                 }
             ]);
 
-        setTurn(piece && piece.color === "light" ? "dark" : "light");
+        setTurn(piece && piece.color === "White" ? "Black" : "White");
     }
 
     function evaluateBoard (pieces, color) {
@@ -362,7 +400,7 @@ const Board = () => {
             {/* Top Info Row (turn indicator, check status, etc.) */}
             <div className="flex justify-between items-center w-full max-w-6xl mb-6 px-4">
             <div className="text-lg font-semibold">
-                Turn: <span className="text-primary capitalize">{turn === "light" ? "White" : "Black"}</span>
+                Turn: <span className="text-primary capitalize">{turn === "White" ? "White" : "Black"}</span>
             </div>
             <div className="text-sm text-red-400">
                 {checkedKing ? `${checkedKing} king in check` : ""}
@@ -400,6 +438,42 @@ const Board = () => {
                     "
                     onMouseMove={handleMouseMove}
                 >
+
+                    {isGameStart && (
+                        <div className="absolute inset-0 bg-black/80 text-white z-50 transition-all duration-500 ease-out backdrop-blur-sm animate-fadeIn">
+                            <div className="flex items-center justify-center">
+                                <div className="flex flex-col px-3 py-3">
+                                    <h3>White</h3>
+                                    <button
+                                        onClick={() => [setAiColor("Black"), setPieces(whitePlayerBoard)]}
+                                        className="w-16 h-16 bg-gray-700 hover:bg-gray-600 rounded-lg transition-all duration-200"
+                                        >
+                                            <img src={symbolMap['lk']}></img>
+                                    </button>
+                                </div>
+                                <div className="flex flex-col px-3">
+                                    <h3>Black</h3>
+                                    <button
+                                        onClick={() => [setAiColor("White"), setPieces(blackPlayerBoard)]}
+                                        className="w-16 h-16 bg-gray-700 hover:bg-gray-600 rounded-lg transition-all duration-200"
+                                        >
+                                            <img src={symbolMap['dk']}></img>
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="flex-auto py-3">
+                                <div>
+                                    <button 
+                                        onClick={() => setIsGameStart(false)}
+                                        className="w-24 h-16 bg-gray-700 hover:bg-gray-600 rounded-lg transition-all duration-200"
+                                        >
+                                            Start
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {renderSquares()}
 
                     {draggingPiece && (
@@ -426,7 +500,7 @@ const Board = () => {
                         <h2 className="text-xl font-semibold mb-2">Choose your promotion</h2>
                         <div className="flex space-x-4">
                             {["q", "r", "b", "kn"].map((type) => {
-                            const colorPrefix = promotionInfo.color === "light" ? "l" : "d";
+                            const colorPrefix = promotionInfo.color === "White" ? "l" : "d";
                             const pieceKey =
                                 type === "kn"
                                 ? `${colorPrefix}kn`
@@ -454,6 +528,8 @@ const Board = () => {
                         </div>
                     </div>
                     )}
+
+                    
 
                     {isGameOver && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 text-white z-50 transition-all duration-500 ease-out backdrop-blur-sm animate-fadeIn">
@@ -483,7 +559,7 @@ const Board = () => {
                         <ul className="space-y-1">
                         {moveHistory.map((m, i) => (
                             <li key={i} className="flex justify-between">
-                            <span>{`${i + 1}. ${m.color === "light" ? "♙" : "♟"} ${m.piece}`}</span>
+                            <span>{`${i + 1}. ${m.color === "White" ? "♙" : "♟"} ${m.piece}`}</span>
                             <span>{`${m.from} → ${m.to}${m.captured ? " × " + m.captured : ""}`}</span>
                             </li>
                         ))}

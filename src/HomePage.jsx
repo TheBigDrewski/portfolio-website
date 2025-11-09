@@ -1,4 +1,5 @@
-import rLogo from "./icons/React-icon.svg.png";
+import rLogo from "./icons/Ruby_logo.svg.png";
+import reactLogo from "./icons/React-icon.svg.png";
 import pLogo from "./icons/Python-logo.svg.png";
 import mLogo from "./icons/Microsoft_dotNET_logo.svg.png";
 import sLogo from "./icons/Sql_logo.svg.png";
@@ -23,9 +24,13 @@ export default function HomePage() {
 
       <section className="bg-gray-900 py-12">
         <h2 className="text-3xl font-bold text-center text-white mb-6">Tech Stacks</h2>
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-6 place-items-center text-gray-300">
+        <div className="grid grid-cols-3 md:grid-cols-3 gap-6 place-items-center text-gray-300">
           <div>
-            <img src={rLogo} alt="React" className="w-24 h-24"/>
+            <img src={rLogo} alt="Ruby" className="w-24 h-24"/>
+            <SkillBar skill="Ruby " level={90} />
+          </div>
+          <div>
+            <img src={reactLogo} alt="React" className="w-24 h-24"/>
             <SkillBar skill="React " level={90} />
           </div>
           <div>

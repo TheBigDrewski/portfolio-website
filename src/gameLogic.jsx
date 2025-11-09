@@ -6,8 +6,8 @@ export const isValidMove = (from, to, piece, pieces, enPassantTarget) => {
 
         // Pawn Logic
         if(piece.type === "dp" || piece.type === "lp") {
-            const dir = piece.color === "light" ? -1 : 1;
-            const startRow = piece.color === "light" ? 6 : 1;
+            const dir = piece.color === "White" ? -1 : 1;
+            const startRow = piece.color === "White" ? 6 : 1;
             const oneStep = toRow - fromRow === dir && fromCol === toCol && !pieces[to];
             const twoStep =
                 fromRow === startRow &&

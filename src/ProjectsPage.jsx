@@ -1,6 +1,6 @@
 import Project from "./Project.jsx";
-import chess from './assets/chess-game-image.png';
-
+import chess from './pics/chess-game-image.png';
+import ruby from './pics/the-odin-projects.png';
 
 export default function ProjectsPage () {
 
@@ -11,6 +11,12 @@ export default function ProjectsPage () {
             toDoList: ["Opponent Difficulty Slider", "Playing as Black", "Game Imports", "Move Analysis"],
             img: chess,
             page: "/chess",
+        },
+        {
+            title: "Ruby Projects",
+            desc: "Working through TheOdinProject's Ruby curriculum to solidify my understanding of Ruby and OOP principles. Building several projects along the way including command-line games and web apps",
+            img: ruby,
+            page: "https://www.theodinproject.com/paths/full-stack-ruby-on-rails/courses/ruby-programming",
         },
         {
             title: "ERP Lite (Coming Soon)",
